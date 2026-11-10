@@ -1,19 +1,27 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct queue;
-typedef struct queue *queue;
+typedef struct queue *queue_t;
 
 /* create an empty queue */
-extern queue create_queue(void);
+extern queue_t create_queue(void);
 
 /* insert an element at the end of the queue */
-extern void queue_enq(queue q, void *element);
+extern void queue_enq(queue_t q, void *element);
 
 /* delete the front element on the queue and return it */
-extern void *queue_deq(queue q);
+extern void *queue_deq(queue_t q);
 
 /* return a true value if and only if the queue is empty */
-extern int queue_empty(queue q);
+extern int queue_empty(queue_t q);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

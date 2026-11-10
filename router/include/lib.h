@@ -1,6 +1,10 @@
 #ifndef _SKEL_H_
 #define _SKEL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <unistd.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -106,5 +110,9 @@ void init(char *argv[], int argc);
 			exit(1); \
 		} \
 	} while (0)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _SKEL_H_ */

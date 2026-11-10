@@ -9,19 +9,19 @@ struct queue
 	list tail;
 };
 
-queue create_queue(void)
+queue_t create_queue(void)
 {
-	queue q = malloc(sizeof(struct queue));
+	queue_t q = (queue_t)malloc(sizeof(struct queue));
 	q->head = q->tail = NULL;
 	return q;
 }
 
-int queue_empty(queue q)
+int queue_empty(queue_t q)
 {
 	return q->head == NULL;
 }
 
-void queue_enq(queue q, void *element)
+void queue_enq(queue_t q, void *element)
 {
 	if(queue_empty(q)) {
 		q->head = q->tail = constr(element, NULL);
@@ -31,7 +31,7 @@ void queue_enq(queue q, void *element)
 	}
 }
 
-void *queue_deq(queue q)
+void *queue_deq(queue_t q)
 {
 	assert(!queue_empty(q));
 	{

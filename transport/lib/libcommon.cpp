@@ -24,9 +24,13 @@ extern struct pollfd data_fds[MAX_CONNECTIONS];
 extern struct pollfd timer_fds[MAX_CONNECTIONS];
 extern int fdmax;
 
+pthread_mutex_t core_lock = PTHREAD_MUTEX_INITIALIZER;
+
 int recv_message_or_timeout(char *buff, size_t len, int *conn_id)
 {
     int ret, i;
+
+    pthread_mutex_lock(&core_lock);
 
     /* We check if data is available on a socket or if a timer has expired */
     ret = poll(data_fds, fdmax, 0); 
@@ -55,6 +59,7 @@ int recv_message_or_timeout(char *buff, size_t len, int *conn_id)
             assert(j != -1);
             /* Write in the conn_id the connection of the socket*/
             *conn_id = j;
+            pthread_mutex_unlock(&core_lock);
             return n;
         }
         /* A timer has expired on a connection */
@@ -75,10 +80,12 @@ int recv_message_or_timeout(char *buff, size_t len, int *conn_id)
 
             /* Write in the conn_id the connection of the socket*/
             *conn_id = j;
+            pthread_mutex_unlock(&core_lock);
             return -1;
         }
     }
 
+    pthread_mutex_unlock(&core_lock);
     /* If nothing happened, return -14. */
     return -14;
 }

@@ -1,0 +1,14 @@
+*.o
+*.zip
+*.bin
+.cache/
+__pycache__/
+compile_commands.json
+router/router
+router/router0
+router/router1
+router/router_*_out
+router/router_*_err
+router/hosts_output/
+transport/server
+transport/client

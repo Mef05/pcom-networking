@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -f README ]; then
+if [ ! -f README.md ]; then
     echo "No README present! Exiting..." >&2
     exit 1
 fi
@@ -12,4 +12,4 @@ fi
 
 rm -rf archive.zip
 make clean
-zip -r archive.zip lib/ *.c Makefile README
+zip -r archive.zip lib/ *.c Makefile README.md

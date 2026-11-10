@@ -1,7 +1,7 @@
 PROJECT=server client
 SOURCES=server.cpp client.cpp lib/libsend.cpp lib/librecv.cpp lib/libcommon.cpp
 LIBRARY=nope
-INCPATHS= -I lib/include
+INCPATHS=lib/include
 LIBPATHS=.
 LDFLAGS=
 CFLAGS=-c -Wall -Werror -Wno-error=unused-variable -g
@@ -31,3 +31,6 @@ client: $(OBJECTS)
 
 clean:
 	rm -f $(OBJECTS) server client
+
+debug: clean
+	$(MAKE) all CFLAGS="$(CFLAGS) -DDEBUG"

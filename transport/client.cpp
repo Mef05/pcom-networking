@@ -1,20 +1,19 @@
-#include <netinet/in.h>
-#include <sys/socket.h>
+#include "lib.h"
 #include <arpa/inet.h>
+#include <cassert>
 #include <cstring>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <cassert>
-#include <stdlib.h>
-#include "lib.h"
 
 #define CHUNKSIZE 1024
 
 /* Receives a file path as a parameter and sends it to the server*/
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     char buf[CHUNKSIZE];
     int bytes_sent = 0;
 
@@ -38,7 +37,7 @@ int main(int argc, char *argv[])
     printf("Connected to server\n");
 
     /* Can be used to make the client wait a bit before sending */
-    if (argc == 3){
+    if (argc == 3) {
         sleep(atoi(argv[2]));
     }
 
@@ -47,7 +46,7 @@ int main(int argc, char *argv[])
     assert(fd >= 0);
 
     // move the file pointer to the end of the file to get its size
-    uint32_t size = lseek(fd, 0, SEEK_END); 
+    uint32_t size = lseek(fd, 0, SEEK_END);
 
     /* We should have enough space in the sender window at the beginning*/
     send_data(conn_id, (char *)&size, sizeof(uint32_t));
@@ -59,7 +58,7 @@ int main(int argc, char *argv[])
         int n = read(fd, buf, sizeof(buf));
         assert(n >= 0);
 
-        if(n == 0)
+        if (n == 0)
             break;
 
         bytes_sent = 0;
@@ -67,9 +66,9 @@ int main(int argc, char *argv[])
             /* Send to the server */
             int count = send_data(conn_id, buf + bytes_sent, n - bytes_sent);
 
-	    if (count == -1)
-		    continue;
-            
+            if (count == -1)
+                continue;
+
             bytes_sent += count;
 
             /* Wait a bit before trying to send again */
@@ -80,7 +79,8 @@ int main(int argc, char *argv[])
 
     printf("Finished sending the file\n");
     /* Give the other thread time to finish the transmission */
-    while (1) {}
+    while (1) {
+    }
 
-    return 0; 
+    return 0;
 }
